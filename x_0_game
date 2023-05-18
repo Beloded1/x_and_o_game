@@ -1,4 +1,4 @@
-import random
+import random, time
 
 X = "X"
 O = "O"
@@ -10,10 +10,14 @@ NUM_SQUARES = 9
 def display_instruct():
     print(
     """
-    Welcome to the greatest russian game 'Крестики-Нолики'
+    Welcome to the greatest russian game 'Крестики-Нолики'""")
+    time.sleep(2)
 
-    You will make your move known by entering a number, 0 - 8.  The number 
-    will correspond to the board position as illustrated:
+    print("""You will make your move known by entering a number, 0 - 8.""")
+    time.sleep(2)
+    print("""The number will correspond to the board position as illustrated:""")
+    time.sleep(1)
+    print(""")
 
                     0 | 1 | 2
                     ---------
@@ -104,8 +108,9 @@ def computer_move(board, computer, human):
     board = board[:]
     COMP_VARIANTS = (0, 1, 2, 3, 4, 5, 6, 7, 8)
     COMP_MOVES = random.sample(COMP_VARIANTS, 9)
-
+    time.sleep(2)
     print("Computer take number,", end="")
+    time.sleep(1.5)
     for move in legal_moves(board):
         board[move] = computer
         if winner(board) == computer:
