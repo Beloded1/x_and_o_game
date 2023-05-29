@@ -1,2 +1,2 @@
 wemake-python-styleguide 
-mypy1989
+mypy == 1.3.0
