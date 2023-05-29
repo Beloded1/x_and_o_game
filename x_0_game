@@ -100,7 +100,7 @@ def winner(board):
 
 
 def human_move(board, human):
-    legal = legal_moves(board)
+    legal = get_legal_moves(board)
     move = None
     while move not in legal:
         move = ask_number("Where will you move? (0 - 8):", 0, NUM_SQUARES)
