@@ -81,7 +81,7 @@ def get_legal_moves(board):
     return moves
 
 
-def winner(board):
+def winner(board: tuple(tuple(int, int, int))) -> None:
     WAYS_TO_WIN = ((0, 1, 2),
                    (3, 4, 5),
                    (6, 7, 8),
