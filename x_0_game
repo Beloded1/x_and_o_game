@@ -55,7 +55,7 @@ def who_goes_first():
     return computer, human
 
 
-def new_board():
+def new_board() -> list:
     board = []
     for square in range(NUM_SQUARES):
         board.append(EMPTY)
@@ -63,12 +63,15 @@ def new_board():
 
 
 
-def display_board(board):
-    print("\n\t", board[0], "|", board[1], "|", board[2])
-    print("\t","---------")
-    print("\t",board[3], "|", board[4], "|", board[5])
-    print("\t","---------")
-    print("\t",board[6], "|", board[7], "|", board[8])
+def display_board(board) -> None: 
+    return f'''
+    {board[0]}  | {board[1]} | {board[2]}    0  1  2
+    ---+---+--- 
+    {board[3]}  | {board[4]} | {board[5]}    3  4  5
+    ---+---+--- 
+    {board[6]}  | {board[7]} | {board[8]}    6  7  8
+    '''
+
 
 def get_legal_moves(board):
     moves = []
@@ -159,7 +162,7 @@ def main():
     computer, human = who_goes_first()
     turn = X
     board = new_board()
-    display_board(board)
+    print(display_board(board))
 
     while not winner(board):
         if turn == human:
@@ -168,7 +171,7 @@ def main():
         else:
             move = computer_move(board, computer, human)
             board[move] = computer
-        display_board(board)
+        print(display_board(board))
         turn = next_turn(turn)
 
     the_winner = winner(board)
