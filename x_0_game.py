@@ -1,5 +1,6 @@
 import random
 import time
+from typing import Tuple
 
 X = "X"
 O = "O"
@@ -8,37 +9,40 @@ TIE = "TIE"
 NUM_SQUARES = 9
 COMP_VARIANTS = (0, 1, 2, 3, 4, 5, 6, 7, 8)
 
-def say(message: str, wait_sec: int) -> None: 
+
+def say(message: str, wait_sec: int) -> None:
     wait_sec = random.randint(1, 3)
     time.sleep(wait_sec)
     print(message)
 
+
 def display_instruct():
     say(
-    """
-    Welcome to the greatest russian game 'Крестики-Нолики'""", 2)
-    
+        """
+        Welcome to the greatest Russian game 'Крестики-Нолики'""", 2)
+
 
     say("""You will make your move known by entering a number, 0 - 8.""", 2)
-    
-    say("""The number will correspond to the board position as illustrated:""", 1)
-    
-    print(""")
 
+    say("""The number will correspond to the board position as illustrated:""", 1)
+
+    print("""
                     0 | 1 | 2
                     ---------
                     3 | 4 | 5
                     ---------
                     6 | 7 | 8
-
-    
     """
     )
 
-def ask_number(question, low, high):
+
+def ask_number(question: str, low: int, high: int) -> int:
     response = None
     while response not in range(low, high):
-        response = int(input(question))
+        try:
+            response = int(input(question))
+        except ValueError:
+            print("Invalid input. Please enter a valid integer.")
     return response
 
 
@@ -49,7 +53,7 @@ def who_goes_first():
         human = X
         computer = O
     else:
-        print("\nComputer go first.")
+        print("\nComputer goes first.")
         computer = X
         human = O
     return computer, human
@@ -62,15 +66,14 @@ def new_board() -> list:
     return board
 
 
-
-def display_board(board) -> None: 
-    return f'''
+def display_board(board) -> None:
+    print(f'''
     {board[0]}  | {board[1]} | {board[2]}    0  1  2
-    ---+---+--- 
+    ---+---+---
     {board[3]}  | {board[4]} | {board[5]}    3  4  5
-    ---+---+--- 
+    ---+---+---
     {board[6]}  | {board[7]} | {board[8]}    6  7  8
-    '''
+    ''')
 
 
 def get_legal_moves(board):
@@ -81,7 +84,7 @@ def get_legal_moves(board):
     return moves
 
 
-def winner(board: tuple(tuple(int, int, int))) -> None:
+def winner(board: Tuple[int, int, int]) -> None:
     WAYS_TO_WIN = ((0, 1, 2),
                    (3, 4, 5),
                    (6, 7, 8),
@@ -108,7 +111,7 @@ def human_move(board, human):
     while move not in legal:
         move = ask_number("Where will you move? (0 - 8):", 0, NUM_SQUARES)
         if move not in legal:
-            print("\nThat square is already occupied.  Choose another one.\n")
+            print("\nThat square is already occupied. Choose another one.\n")
     print("Fine...")
     return move
 
@@ -117,7 +120,7 @@ def computer_move(board, computer, human):
     board = board[:]
     comp_moves = random.sample(COMP_VARIANTS, 9)
     say('', 1)
-    say("Computer take number,", 2)
+    say("Computer takes number,", 2)
     for move in get_legal_moves(board):
         board[move] = computer
         if winner(board) == computer:
@@ -137,6 +140,7 @@ def computer_move(board, computer, human):
             print(move)
             return move
 
+
 def next_turn(turn):
     if turn == X:
         return O
@@ -151,10 +155,10 @@ def congrat_winner(the_winner, computer, human):
         print("It's a tie!\n")
 
     if the_winner == computer:
-        print("Computor won \n")
+        print("Computer won.\n")
 
     elif the_winner == human:
-        print("Congratulations. You won! \n")
+        print("Congratulations. You won!\n")
 
 
 def main():
@@ -162,7 +166,7 @@ def main():
     computer, human = who_goes_first()
     turn = X
     board = new_board()
-    print(display_board(board))
+    display_board(board)
 
     while not winner(board):
         if turn == human:
@@ -171,7 +175,7 @@ def main():
         else:
             move = computer_move(board, computer, human)
             board[move] = computer
-        print(display_board(board))
+        display_board(board)
         turn = next_turn(turn)
 
     the_winner = winner(board)
