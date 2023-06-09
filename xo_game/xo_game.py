@@ -1,6 +1,7 @@
 import random
 import time
-from typing import Tuple
+from typing import Optional
+
 
 X = "X"
 O = "O"
@@ -16,7 +17,7 @@ def say(message: str, wait_sec: int) -> None:
     print(message)
 
 
-def display_instruct():
+def display_instruct() -> None:
     say(
         """
         Welcome to the greatest Russian game 'Крестики-Нолики'""", 2)
@@ -36,7 +37,7 @@ def display_instruct():
     )
 
 
-def ask_number(question: str, low: int, high: int) -> int:
+def ask_number(question: str, low: int, high: int) -> int | None:
     response = None
     while response not in range(low, high):
         try:
@@ -46,7 +47,7 @@ def ask_number(question: str, low: int, high: int) -> int:
     return response
 
 
-def who_goes_first():
+def who_goes_first() -> tuple[str, str]:
     go_first = random.randint(0, 1)
     if go_first == 0:
         print("\nTake the first move.")
@@ -66,17 +67,18 @@ def new_board() -> list:
     return board
 
 
-def display_board(board) -> None:
-    print(f'''
+def display_board(board: list[str]) -> str:
+    board_string = f'''
     {board[0]}  | {board[1]} | {board[2]}    0  1  2
     ---+---+---
     {board[3]}  | {board[4]} | {board[5]}    3  4  5
     ---+---+---
     {board[6]}  | {board[7]} | {board[8]}    6  7  8
-    ''')
+    '''
+    return board_string
 
 
-def get_legal_moves(board):
+def get_legal_moves(board: list[str]) -> list[int]:
     moves = []
     for square in range(NUM_SQUARES):
         if board[square] == EMPTY:
@@ -84,7 +86,7 @@ def get_legal_moves(board):
     return moves
 
 
-def winner(board: Tuple[int, int, int]) -> None:
+def winner(board: list[str]) -> str | None:
     WAYS_TO_WIN = ((0, 1, 2),
                    (3, 4, 5),
                    (6, 7, 8),
@@ -105,7 +107,7 @@ def winner(board: Tuple[int, int, int]) -> None:
     return None
 
 
-def human_move(board, human):
+def human_move(board: list[str], human: str) -> Optional[int]:
     legal = get_legal_moves(board)
     move = None
     while move not in legal:
@@ -116,7 +118,7 @@ def human_move(board, human):
     return move
 
 
-def computer_move(board, computer, human):
+def computer_move(board: list[str], computer: str, human: str) -> int:
     board = board[:]
     comp_moves = random.sample(COMP_VARIANTS, 9)
     say('', 1)
@@ -141,14 +143,13 @@ def computer_move(board, computer, human):
             return move
 
 
-def next_turn(turn):
+def next_turn(turn: str) -> str:
     if turn == X:
         return O
     else:
         return X
 
-
-def congrat_winner(the_winner, computer, human):
+def congrat_winner(the_winner: Optional[int], computer: str, human:str) -> None:
     if the_winner != TIE:
         print(the_winner, "won!\n")
     else:
@@ -158,29 +159,4 @@ def congrat_winner(the_winner, computer, human):
         print("Computer won.\n")
 
     elif the_winner == human:
-        print("Congratulations. You won!\n")
-
-
-def main():
-    display_instruct()
-    computer, human = who_goes_first()
-    turn = X
-    board = new_board()
-    display_board(board)
-
-    while not winner(board):
-        if turn == human:
-            move = human_move(board, human)
-            board[move] = human
-        else:
-            move = computer_move(board, computer, human)
-            board[move] = computer
-        display_board(board)
-        turn = next_turn(turn)
-
-    the_winner = winner(board)
-    congrat_winner(the_winner, computer, human)
-
-
-if __name__ == '__main__':
-    main()
+        print("Congratulations. You won!\n") 
