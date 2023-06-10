@@ -107,7 +107,7 @@ def winner(board: list[str]) -> str | None:
     return None
 
 
-def human_move(board: list[str], human: str) -> Optional[int]:
+def human_move(board: list[str], human: str) -> int:
     legal = get_legal_moves(board)
     move = None
     while move not in legal:
@@ -115,6 +115,7 @@ def human_move(board: list[str], human: str) -> Optional[int]:
         if move not in legal:
             print("\nThat square is already occupied. Choose another one.\n")
     print("Fine...")
+    assert move is not None
     return move
 
 
@@ -141,7 +142,7 @@ def computer_move(board: list[str], computer: str, human: str) -> int:
         if move in get_legal_moves(board):
             print(move)
             return move
-
+    raise AssertionError('function does not go to this place')
 
 def next_turn(turn: str) -> str:
     if turn == X:
@@ -149,7 +150,7 @@ def next_turn(turn: str) -> str:
     else:
         return X
 
-def congrat_winner(the_winner: Optional[int], computer: str, human:str) -> None:
+def congrat_winner(the_winner: Optional[str], computer: str, human:str) -> None:
     if the_winner != TIE:
         print(the_winner, "won!\n")
     else:
