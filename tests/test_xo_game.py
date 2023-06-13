@@ -1,11 +1,11 @@
-from xo_game.xo_game import display_board, get_legal_moves, next_turn, winner
+from xo_game.game import display_board, get_legal_moves, next_turn, winner
 import pytest
 
 
 @pytest.mark.parametrize("board, expected_winner", [
-    (["X", "X", "X",
+    pytest.param(["X", "X", "X",
       "O", "O", " ",
-      " ", " ", " "], "X"),
+      " ", " ", " "], "X", id='X fon'),
     (["O", "O", " ",
       "X", "X", "X",
       " ", " ", " "], "X"),
